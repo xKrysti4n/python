@@ -1,37 +1,24 @@
-numery_odbiorcow = []
 
-with open("odbiorcy_przyklad.txt") as plik:
+ile_potrzeba_liter = {'w':1, 'a':2, 'k':1, 'c':1, 'j':1, 'e':1}
+
+slowa = []
+with open("przyklad.txt") as plik:
     for line in plik:
-        for l in line.split():
-            numery_odbiorcow.append(int(l))
-obecni_odb = numery_odbiorcow
+        slowa.append(line.strip())
 
-def rundy(obecni_odbiorcy, numery_odbiorcow, obecna_runda):
-    obecna_runda += 1
-    bufor = [[] for x in range(0, len(numery_odbiorcow))]
-    obenca_tura = [0 for x in range(0, len(numery_odbiorcow))]
+def policz_wystapienia(pojedyncze_slowo):
+    obecny_licznik = {'w':0, 'a':0, 'k':0, 'c':0, 'j':0, 'e':0}
+    for litera in pojedyncze_slowo:
+        if litera in obecny_licznik:
+            obecny_licznik[litera] += 1
+    return obecny_licznik
 
-    for x in range(0, len(obecni_odbiorcy)):
-        bufor[obecni_odbiorcy[x] - 1].append(x + 1)
 
-    for k in range(0, len(numery_odbiorcow)):
-        for x in bufor[k]:
-            obenca_tura[x - 1] = numery_odbiorcow[k]
 
-    for p in range(0, len(obenca_tura)):
-        if obenca_tura[p] - 1 == p:
-            print(f"Znaleziono pakiet {obenca_tura[p]} w rundzie {obecna_runda}")
-            return 
+for pojedyncze_slowo in slowa:
+    sprawdz_dla_tej_litery = policz_wystapienia(pojedyncze_slowo)
+    wynik = min([sprawdz_dla_tej_litery[index] // wartosc for index,wartosc in ile_potrzeba_liter.items()])
 
-    # print(obenca_tura)
 
-    return obenca_tura, obecna_runda
 
-obecna_r = 1
-# print(numery_odbiorcow)
-for x in range(0, 4):
-    wynik = rundy(obecni_odb, numery_odbiorcow, obecna_r)
-    # print(wynik)
-    if wynik is None:
-        break
-    obecni_odb, obecna_r = wynik
+    print(wynik,end=" ")

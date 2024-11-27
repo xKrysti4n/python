@@ -1,24 +1,30 @@
-numery_odbiorcow = []
 
-with open("odbiorcy_przyklad.txt") as plik:
+ile_potrzeba_liter = {'w':1, 'a':2, 'k':1, 'c':1, 'j':1, 'e':1}
+
+slowa = []
+
+with open("slowa.txt") as plik:
     for line in plik:
-        for l in line.split():
-            numery_odbiorcow.append(int(l))
-obecni_odb = numery_odbiorcow
+        slowa.append(line.strip())
 
-def rundy(obecni_odbiorcy, numery_odbiorcow):
-    bufor = [[] for x in range(0, len(numery_odbiorcow))]
-    obenca_tura = [0 for x in range(0, len(numery_odbiorcow))]
+def policz_wystapienia(pojedyncze_slowo):
+    obecny_licznik = {'w':0, 'a':0, 'k':0, 'c':0, 'j':0, 'e':0}
+    for litera in pojedyncze_slowo:
+        if litera in obecny_licznik:
+            obecny_licznik[litera] += 1
+    return obecny_licznik
 
-    for x in range(0, len(obecni_odbiorcy)):
-        bufor[obecni_odbiorcy[x] - 1].append(x + 1)
-    for k in range(0, len(numery_odbiorcow)):
-        for x in bufor[k]:
-            obenca_tura[x - 1] = numery_odbiorcow[k]
-    print(obenca_tura)
-    return obenca_tura
+def sparawdz_czego_mniej(slowo,ile_wystapien_wakacje):
+    if ile_wystapien_wakacje == 0:
+        return len(slowo)
+    else:
+        return len(slowo) - ile_wystapien_wakacje * 7
+
+for pojedyncze_slowo in slowa:
+    sprawdz_dla_tego_slowa = policz_wystapienia(pojedyncze_slowo)
+    ile_razy_wakacje = min([sprawdz_dla_tego_slowa[index] // wartosc for index,wartosc in ile_potrzeba_liter.items()])
+
+    wynik = sparawdz_czego_mniej(pojedyncze_slowo,ile_razy_wakacje)
+    print(wynik,end=" ")
 
 
-print(numery_odbiorcow)
-for x in range(0, 1):
-    obecni_odb = rundy(obecni_odb, numery_odbiorcow)
